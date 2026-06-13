@@ -33,7 +33,7 @@ function doGet(e) {
 
   return HtmlService.createTemplateFromFile('Index')
     .evaluate()
-    .setTitle('Critical Rew Tracker')
+    .setTitle('Critical Few Tracker')
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }
 
