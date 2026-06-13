@@ -195,7 +195,7 @@ function renderEmployeeChart(items) {
   document.getElementById('employeeChart').innerHTML = items.map(e =>
     `<div class="chartCol">
       <div class="chartVal">${e.completionRate}%</div>
-      <div class="chartBar" style="height:${Math.max(8, Math.round((e.completionRate / max) * 130))}px"></div>
+      <div class="chartBar" style="height:${Math.max(6, Math.round((e.completionRate / max) * 70))}px"></div>
       <div class="chartLabel" title="${esc(e.name)}">${esc(shortName(e.name))}</div>
     </div>`
   ).join('') || '<div class="muted">No data</div>';
