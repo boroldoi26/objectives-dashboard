@@ -137,11 +137,28 @@
       </div>
     </section>
 
-    <!-- Tab: Risks -->
+    <!-- Tab: Risks / 30-60-90 -->
     <section id="risks" class="tab">
-      <div class="grid twoCol">
-        <div class="card"><div class="sectionTitle"><h3>Critical objectives</h3></div><div id="criticalList"></div></div>
-        <div class="card"><div class="sectionTitle"><h3>Due soon objectives</h3></div><div id="dueSoonList"></div></div>
+      <div class="card overdueCard" id="overdueCard" style="margin-bottom:16px;display:none">
+        <div class="sectionTitle">
+          <div><h3>Хоцорсон зорилт</h3><span>Due date өнгөрсөн, дуусаагүй</span></div>
+          <span class="badge critical" id="overdueCount"></span>
+        </div>
+        <div id="overdueList"></div>
+      </div>
+      <div class="grid threeCol">
+        <div class="card">
+          <div class="sectionTitle"><div><h3>30 хоног</h3><span>0–30 хоног үлдсэн</span></div></div>
+          <div id="due30List"></div>
+        </div>
+        <div class="card">
+          <div class="sectionTitle"><div><h3>60 хоног</h3><span>31–60 хоног үлдсэн</span></div></div>
+          <div id="due60List"></div>
+        </div>
+        <div class="card">
+          <div class="sectionTitle"><div><h3>90 хоног</h3><span>61–90 хоног үлдсэн</span></div></div>
+          <div id="due90List"></div>
+        </div>
       </div>
     </section>
 

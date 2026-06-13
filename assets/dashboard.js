@@ -237,18 +237,34 @@ function renderBoard(items) {
 }
 
 function renderRiskLists(items) {
+  const active = items.filter(r =>
+    r.status !== 'Completed' && r.status !== 'Cancelled' && r.daysLeft !== ''
+  );
+  const overdue = active.filter(r => r.daysLeft < 0);
+  const due30   = active.filter(r => r.daysLeft >= 0  && r.daysLeft <= 30);
+  const due60   = active.filter(r => r.daysLeft > 30  && r.daysLeft <= 60);
+  const due90   = active.filter(r => r.daysLeft > 60  && r.daysLeft <= 90);
+
   const card = r =>
     `<div class="miniItem">
       <b>${esc(r.priority)} · ${esc(r.employee || '')}</b>
-      ${esc(cut(r.objective, 120))}
-      <br><span class="muted">Due: ${esc(r.dueDate || '-')} · ${r.daysLeft} days</span>
+      <div>${esc(cut(r.objective, 100))}</div>
+      <span class="muted">${esc(r.dueDate || '-')} · ${
+        r.daysLeft < 0
+          ? Math.abs(r.daysLeft) + ' хоног хоцорсон'
+          : r.daysLeft + ' хоног үлдсэн'
+      }</span>
     </div>`;
-  document.getElementById('criticalList').innerHTML =
-    items.filter(r => r.risk === 'Critical').slice(0, 12).map(card).join('') ||
-    '<div class="muted">No critical objectives</div>';
-  document.getElementById('dueSoonList').innerHTML =
-    items.filter(r => r.dueSoon).slice(0, 12).map(card).join('') ||
-    '<div class="muted">No due soon objectives</div>';
+
+  const overdueCard = document.getElementById('overdueCard');
+  if (overdueCard) overdueCard.style.display = overdue.length ? 'block' : 'none';
+  const countEl = document.getElementById('overdueCount');
+  if (countEl) countEl.textContent = overdue.length || '';
+
+  document.getElementById('overdueList').innerHTML = overdue.slice(0, 15).map(card).join('') || '<div class="muted">Хоцорсон зорилт байхгүй</div>';
+  document.getElementById('due30List').innerHTML   = due30.slice(0, 15).map(card).join('')   || '<div class="muted">Байхгүй</div>';
+  document.getElementById('due60List').innerHTML   = due60.slice(0, 15).map(card).join('')   || '<div class="muted">Байхгүй</div>';
+  document.getElementById('due90List').innerHTML   = due90.slice(0, 15).map(card).join('')   || '<div class="muted">Байхгүй</div>';
 }
 
 /* ── Objectives table with pagination ── */
