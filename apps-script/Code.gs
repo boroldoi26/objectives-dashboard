@@ -188,6 +188,20 @@ function submitUpdateRequest(rowNumber, payload) {
       throw new Error('Өөрчлөлт илрээгүй байна. Status, due date эсвэл notes өөрчилнө үү.');
     }
 
+    // Давхардсан pending хүсэлт шалгах: нэг row-д ижил өөрчлөлттэй хүсэлт байвал татгалзана.
+    const pendingSheet = getPendingSheet_();
+    if (pendingSheet.getLastRow() > 1) {
+      const existingRows = pendingSheet.getRange(2, 1, pendingSheet.getLastRow() - 1, 15).getValues();
+      const duplicate = existingRows.some(r =>
+        Number(r[3]) === Number(rowNumber) &&
+        String(r[8] || '') === newStatus &&
+        String(r[14] || '') === 'Pending'
+      );
+      if (duplicate) {
+        throw new Error('Энэ зорилтод аль хэдийн хүлээгдэж буй хүсэлт байна. Admin шийдвэрлэхийг хүлээнэ үү.');
+      }
+    }
+
     const requester = String(payload.requestedBy || '').trim() || getUserEmail_();
     const requestId = 'REQ-' + Utilities.formatDate(timestamp, Session.getScriptTimeZone(), 'yyyyMMdd-HHmmss') + '-' + Math.floor(Math.random() * 9000 + 1000);
     const pending = getPendingSheet_();

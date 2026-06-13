@@ -3,6 +3,7 @@
 
 let rows = [], statusOptions = [], selectedRow = null, debounceTimer = null, latestData = null;
 let currentPage = 1;
+let isSubmitting = false;
 const PAGE_SIZE = 50;
 const API_TIMEOUT_MS = 30000;
 
@@ -371,11 +372,18 @@ function openModal(rowNumber) {
 }
 
 function closeModal() {
+  isSubmitting = false;
+  const btn = document.getElementById('submitBtn');
+  if (btn) { btn.disabled = false; btn.textContent = 'Submit for approval'; }
   document.getElementById('modalBackdrop').style.display = 'none';
 }
 
 function saveUpdate() {
-  if (!selectedRow) return;
+  if (!selectedRow || isSubmitting) return;
+  isSubmitting = true;
+  const btn = document.getElementById('submitBtn');
+  if (btn) { btn.disabled = true; btn.textContent = 'Sending...'; }
+
   const payload = {
     action:         'update',
     rowNumber:      selectedRow.rowNumber,
@@ -387,11 +395,16 @@ function saveUpdate() {
   };
   apiJsonp(payload)
     .then(res => {
+      isSubmitting = false;
       closeModal();
       toast((res && res.message) || 'Approval request submitted');
       loadData(collectFilters());
     })
-    .catch(err => toast('Error: ' + err.message, 'error'));
+    .catch(err => {
+      isSubmitting = false;
+      if (btn) { btn.disabled = false; btn.textContent = 'Submit for approval'; }
+      toast('Error: ' + err.message, 'error');
+    });
 }
 
 /* ── Admin approvals ── */
