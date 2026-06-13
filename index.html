@@ -24,9 +24,9 @@
     <div class="navItem active"   onclick="showTab('overview',this)">Dashboard overview</div>
     <div class="navItem"          onclick="showTab('objectives',this);focusSearch()">Search / My objectives</div>
     <div class="navItem"          onclick="showTab('employees',this)">Employee performance</div>
-    <div class="navItem"          onclick="showTab('risks',this)">Due soon &amp; risk</div>
+    <div class="navItem"          onclick="showTab('risks',this)">30/60/90</div>
     <div class="navItem"          onclick="showTab('objectives',this)">Objectives table</div>
-    <div class="navItem"          onclick="showTab('admin',this);loadApprovals()">Admin approvals <span id="pendingBadge"></span></div>
+    <div class="navItem"          onclick="showTab('admin',this);loadApprovals()">Leader's approval <span id="pendingBadge"></span></div>
     <div class="sideFoot">
       <b>Approval workflow</b><br>
       Хэрэглэгчийн update хүсэлт эхлээд Pending_Updates sheet дээр хадгалагдаж,
@@ -40,7 +40,7 @@
     <!-- Hero -->
     <section class="hero">
       <div>
-        <h2>Operational objectives tracker</h2>
+        <h2>Critical Rew Tracker</h2>
         <p>Ажилтан тус бүрийн гүйцэтгэл, хугацааны эрсдэл, category progress, objective status-ийг нэг дор харах dashboard.</p>
       </div>
       <div class="heroActions">
@@ -124,7 +124,7 @@
     <section id="employees" class="tab">
       <div class="card">
         <div class="sectionTitle">
-          <div><h3>Employee performance detail</h3><span>Total, completed, due soon, overdue, progress score</span></div>
+          <div><h3>Employee performance progress</h3><span>Total, completed, due soon, overdue, progress score</span></div>
         </div>
         <div class="employeeGrid" id="employeeCards2"></div>
       </div>
@@ -167,7 +167,7 @@
     <section id="admin" class="tab">
       <div class="card">
         <div class="sectionTitle">
-          <div><h3>Admin approvals</h3><span>Pending_Updates sheet дээр ирсэн update хүсэлтүүд</span></div>
+          <div><h3>Leader's approval</h3><span>Pending_Updates sheet дээр ирсэн update хүсэлтүүд</span></div>
           <button class="btn secondary small" onclick="loadApprovals()">Refresh</button>
         </div>
         <div class="approvalTools">
