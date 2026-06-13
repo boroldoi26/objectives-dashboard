@@ -110,18 +110,18 @@ function renderAll(data) {
 
 function renderKpis(s, dueDays) {
   const items = [
-    ['Total',           s.total || 0,                    'Бүх objective'],
-    ['Completed',       s.completed || 0,                (s.completionRate || 0) + '% completion'],
-    ['In progress',     s.inProgress || 0,               'Active work'],
-    ['Not started',     s.notStarted || 0,               'Pending'],
-    ['Due soon',        s.dueSoon || 0,                  'Next ' + (dueDays || 14) + ' days'],
-    ['Pending approval',s.pendingApprovalCount || 0,     'Admin review'],
-    ['Progress score',  (s.progressScore || 0) + '%',    'Weighted progress']
+    ['Total',           s.total || 0,                    'Бүх objective',              ''],
+    ['Completed',       s.completed || 0,                (s.completionRate || 0) + '% completion', 'var(--green)'],
+    ['In progress',     s.inProgress || 0,               'Active work',                'var(--amber)'],
+    ['Not started',     s.notStarted || 0,               'Pending',                    'var(--red)'],
+    ['Due soon',        s.dueSoon || 0,                  'Next ' + (dueDays || 30) + ' days', 'var(--amber)'],
+    ['Pending approval',s.pendingApprovalCount || 0,     'Admin review',               'var(--purple)'],
+    ['Progress score',  (s.progressScore || 0) + '%',    'Weighted progress',          'var(--blue)']
   ];
-  document.getElementById('kpis').innerHTML = items.map(([label, value, hint]) =>
+  document.getElementById('kpis').innerHTML = items.map(([label, value, hint, color]) =>
     `<div class="card">
       <div class="kpiLabel">${label}</div>
-      <div class="kpiValue">${value}</div>
+      <div class="kpiValue" ${color ? `style="color:${color}"` : ''}>${value}</div>
       <div class="kpiHint">${hint}</div>
     </div>`
   ).join('');
