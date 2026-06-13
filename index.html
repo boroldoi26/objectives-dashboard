@@ -10,12 +10,19 @@
   <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
+
+<!-- Mobile top bar (hidden on desktop) -->
+<header class="mobileTopBar">
+  <span class="mobileBrand">Critical Rew Tracker</span>
+  <span class="mobileDate" id="mobileSideDate"></span>
+</header>
+
 <div class="shell">
 
   <!-- Sidebar -->
   <aside class="side">
     <div class="brand">
-      <div class="logo">OT</div>
+      <div class="logo">CRT</div>
       <div>
         <h1>Critical Rew Tracker</h1>
         <small id="sideDate">Loading...</small>
@@ -181,6 +188,33 @@
 
   </main>
 </div>
+
+<!-- Mobile bottom navigation (hidden on desktop) -->
+<nav class="mobileNav">
+  <div class="mobileNavInner">
+    <button class="mobileNavBtn active" onclick="showTab('overview',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span>Нүүр</span>
+    </button>
+    <button class="mobileNavBtn" onclick="showTab('objectives',this);focusSearch()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><circle cx="3" cy="6" r="1.2" fill="currentColor" stroke="none"/><circle cx="3" cy="12" r="1.2" fill="currentColor" stroke="none"/><circle cx="3" cy="18" r="1.2" fill="currentColor" stroke="none"/></svg>
+      <span>Зорилт</span>
+    </button>
+    <button class="mobileNavBtn" onclick="showTab('employees',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+      <span>Баг</span>
+    </button>
+    <button class="mobileNavBtn" onclick="showTab('risks',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <span>30/60/90</span>
+    </button>
+    <button class="mobileNavBtn" onclick="showTab('admin',this);loadApprovals()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+      <span>Approval</span>
+      <span class="mobileNavBadge" id="mobilePendingBadge" style="display:none"></span>
+    </button>
+  </div>
+</nav>
 
 <!-- Update modal -->
 <div class="modalBackdrop" id="modalBackdrop">

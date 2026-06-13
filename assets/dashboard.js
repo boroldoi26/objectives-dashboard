@@ -92,7 +92,10 @@ function loadData(filters = collectFiltersSafe()) {
 /* ── Render all ── */
 
 function renderAll(data) {
-  document.getElementById('sideDate').textContent = 'Updated ' + new Date().toLocaleString();
+  const dateStr = 'Updated ' + new Date().toLocaleString();
+  document.getElementById('sideDate').textContent = dateStr;
+  const mobileDate = document.getElementById('mobileSideDate');
+  if (mobileDate) mobileDate.textContent = dateStr;
   renderKpis(data.summary || {}, data.dueSoonDays || 14);
   renderManagerSummary(data.managerSummary || {});
   renderFilters(data.filters || {});
@@ -258,18 +261,18 @@ function renderRows(items) {
 
   document.getElementById('tbody').innerHTML = page.map(r =>
     `<tr class="${r.isParent ? 'parent' : ''} indent-${r.level}">
-      <td>${esc(r.priority)}</td>
-      <td>
+      <td data-label="Priority">${esc(r.priority)}</td>
+      <td data-label="Зорилт">
         <div class="objective">${esc(r.objective)}</div>
         <div class="muted">${esc(cut(r.currentState || '', 120))}</div>
       </td>
-      <td>${esc(r.employee)}</td>
-      <td>${badge(r.status)}</td>
-      <td>${riskBadge(r.risk)}</td>
-      <td>${esc(r.category)}</td>
-      <td>${esc(r.dueDate || '')}</td>
-      <td>${r.daysLeft === '' ? '-' : r.daysLeft}</td>
-      <td><button class="btn small" onclick="openModal(${r.rowNumber})">Update</button></td>
+      <td data-label="Ажилтан">${esc(r.employee)}</td>
+      <td data-label="Статус">${badge(r.status)}</td>
+      <td data-label="Эрсдэл">${riskBadge(r.risk)}</td>
+      <td data-label="Категори">${esc(r.category)}</td>
+      <td data-label="Хугацаа">${esc(r.dueDate || '')}</td>
+      <td data-label="Хоног">${r.daysLeft === '' ? '-' : r.daysLeft}</td>
+      <td data-label="Үйлдэл"><button class="btn small" onclick="openModal(${r.rowNumber})">Update</button></td>
     </tr>`
   ).join('');
 
@@ -396,6 +399,11 @@ function saveUpdate() {
 function renderPendingBadge(n) {
   const el = document.getElementById('pendingBadge');
   if (el) el.textContent = n ? ('(' + n + ')') : '';
+  const mob = document.getElementById('mobilePendingBadge');
+  if (mob) {
+    mob.textContent = n || '';
+    mob.style.display = n ? 'block' : 'none';
+  }
 }
 
 function loadApprovals() {
@@ -451,7 +459,7 @@ function reviewApproval(requestId, decision) {
 function showTab(id, el) {
   document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  document.querySelectorAll('.navItem').forEach(x => x.classList.remove('active'));
+  document.querySelectorAll('.navItem, .mobileNavBtn').forEach(x => x.classList.remove('active'));
   if (el) el.classList.add('active');
 }
 
