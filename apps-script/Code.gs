@@ -306,6 +306,71 @@ function applyApprovedUpdate_(request, reviewer, timestamp) {
   updateField_(sheet, rowNumber, finalMap, 'Updated By', reviewer, changes);
   changes.push({ field: 'Approval Request', oldValue: request.requestId, newValue: 'Approved' });
   appendLog_(rowNumber, changes, reviewer, timestamp);
+
+  // Auto-complete parent if all children are now Completed
+  if (normalizeStatus_(request.newStatus) === 'Completed') {
+    autoCompleteParents_(sheet, rowNumber, headerRow, finalMap);
+  }
+}
+
+// Checks if all direct children of the parent are Completed; if so, marks parent Completed too.
+// Cascades upward (grandparent, etc.) as needed.
+function autoCompleteParents_(sheet, updatedSheetRow, headerRow, map) {
+  const priorityCol = map['Priority#'];
+  const statusCol   = map['Status'];
+  if (!priorityCol || !statusCol) return;
+
+  const rowValues = sheet.getRange(updatedSheetRow, 1, 1, sheet.getLastColumn()).getValues()[0];
+  const priority   = String(cell_(rowValues, priorityCol) || '').trim();
+  if (!priority) return;
+
+  const parts = priority.split('.');
+  if (parts.length <= 1) return; // top-level, no parent
+
+  const parentPriority = parts.slice(0, -1).join('.');
+  const parentParts    = parentPriority.split('.');
+
+  const lastRow = sheet.getLastRow();
+  if (lastRow <= headerRow) return;
+
+  const allValues = sheet.getRange(headerRow + 1, 1, lastRow - headerRow, sheet.getLastColumn()).getValues();
+
+  let parentSheetRow      = null;
+  let parentCurrentStatus = null;
+  const childStatuses     = [];
+
+  allValues.forEach((row, i) => {
+    const p = String(row[priorityCol - 1] || '').trim();
+    if (!p) return;
+    const pParts = p.split('.');
+
+    if (p === parentPriority) {
+      parentSheetRow      = headerRow + 1 + i;
+      parentCurrentStatus = normalizeStatus_(row[statusCol - 1]);
+    }
+    // Direct children of parentPriority (exactly one level deeper)
+    if (pParts.length === parentParts.length + 1 &&
+        pParts.slice(0, parentParts.length).join('.') === parentPriority) {
+      childStatuses.push(normalizeStatus_(row[statusCol - 1]));
+    }
+  });
+
+  if (!parentSheetRow || !childStatuses.length) return;
+  if (parentCurrentStatus === 'Completed') return;
+
+  const allDone = childStatuses.every(s => s === 'Completed');
+  if (!allDone) return;
+
+  // All children are Completed → auto-complete parent
+  const now = new Date();
+  sheet.getRange(parentSheetRow, statusCol).setValue('Completed');
+  if (map['Last Updated']) sheet.getRange(parentSheetRow, map['Last Updated']).setValue(now);
+  if (map['Updated By'])   sheet.getRange(parentSheetRow, map['Updated By']).setValue('Auto (бүх дэд зорилт дууссан)');
+
+  appendLog_(parentSheetRow, [{ field: 'Status', oldValue: parentCurrentStatus, newValue: 'Completed' }], 'system-auto', now);
+
+  // Cascade: check grandparent
+  autoCompleteParents_(sheet, parentSheetRow, headerRow, map);
 }
 
 function findPendingRequest_(requestId) {
