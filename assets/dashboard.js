@@ -191,11 +191,11 @@ function renderEmployeeCards(items) {
 }
 
 function renderEmployeeChart(items) {
-  const max = Math.max(100, ...items.map(x => x.completionRate || 0));
+  const max = Math.max(1, ...items.map(x => x.completionRate || 0));
   document.getElementById('employeeChart').innerHTML = items.map(e =>
     `<div class="chartCol">
       <div class="chartVal">${e.completionRate}%</div>
-      <div class="chartBar" style="height:${Math.max(8, (e.completionRate / max) * 180)}px"></div>
+      <div class="chartBar" style="height:${Math.max(8, Math.round((e.completionRate / max) * 130))}px"></div>
       <div class="chartLabel" title="${esc(e.name)}">${esc(shortName(e.name))}</div>
     </div>`
   ).join('') || '<div class="muted">No data</div>';
@@ -350,6 +350,7 @@ function setEmployeeFilter(e)  { document.getElementById('employee').value = e; 
 function setDueWindow(days) {
   document.getElementById('dueDays').value = String(days);
   document.getElementById('onlyDueSoon').checked = true;
+  showTab('objectives', null);
   applyFilters();
 }
 
@@ -474,6 +475,8 @@ function showTab(id, el) {
   document.getElementById(id).classList.add('active');
   document.querySelectorAll('.navItem, .mobileNavBtn').forEach(x => x.classList.remove('active'));
   if (el) el.classList.add('active');
+  const filtersEl = document.querySelector('.filters');
+  if (filtersEl) filtersEl.classList.toggle('show', id === 'objectives');
 }
 
 function focusSearch() {

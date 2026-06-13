@@ -220,7 +220,7 @@ tr.parent td { font-weight: 800; background: #fcfdff; }
   position: fixed; inset: 0;
   background: rgba(5, 12, 27, .55);
   display: none; align-items: center; justify-content: center;
-  padding: 20px; z-index: 10;
+  padding: 20px; z-index: 200;
   cursor: pointer;
 }
 .modal {
@@ -406,8 +406,10 @@ tr.parent td { font-weight: 800; background: #fcfdff; }
   .kpis { grid-template-columns: repeat(2, 1fr); gap: 10px; }
   .kpiValue { font-size: 26px; }
 
-  /* Filters — vertical stack */
-  .filters {
+  /* Filters — only visible on objectives tab (JS adds .show) */
+  .filters { display: none; }
+  .filters.show {
+    display: grid;
     grid-template-columns: 1fr;
     gap: 8px;
   }
