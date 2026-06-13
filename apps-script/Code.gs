@@ -18,7 +18,7 @@ const CONFIG = {
     'Due Date'
   ],
   STATUS_OPTIONS: ['Not Started', 'In Progress', 'Completed', 'On Hold', 'Cancelled'],
-  DUE_SOON_DAYS: 14,
+  DUE_SOON_DAYS: 30,
   // Optional: set Script Property UPDATE_PASSCODE, or place a value here. Leave blank for no passcode.
   // In approval mode, user updates are saved to Pending_Updates first.
   UPDATE_PASSCODE: '',

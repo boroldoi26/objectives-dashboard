@@ -336,7 +336,7 @@ function collectFilters() {
 
 function clearFilters() {
   ['search', 'employee', 'status', 'category'].forEach(id => document.getElementById(id).value = '');
-  document.getElementById('dueDays').value    = '14';
+  document.getElementById('dueDays').value    = '30';
   document.getElementById('onlyOverdue').checked  = false;
   document.getElementById('onlyDueSoon').checked  = false;
   loadData({});

@@ -59,8 +59,9 @@
 
     <!-- Quick actions -->
     <div class="quickActions">
-      <button class="btn secondary" onclick="setDueWindow(30)">Due 30 days</button>
-      <button class="btn secondary" onclick="setDueWindow(90)">Due 90 days</button>
+      <button class="btn secondary" onclick="setDueWindow(30)">Due 30 хоног</button>
+      <button class="btn secondary" onclick="setDueWindow(60)">Due 60 хоног</button>
+      <button class="btn secondary" onclick="setDueWindow(90)">Due 90 хоног</button>
       <button class="btn secondary" onclick="showObjectivesQuick()">Find objective</button>
     </div>
 
@@ -71,11 +72,9 @@
       <select id="status"   onchange="applyFilters()"><option value="">All statuses</option></select>
       <select id="category" onchange="applyFilters()"><option value="">All categories</option></select>
       <select id="dueDays"  onchange="applyFilters()">
-        <option value="7">Due window: 7 days</option>
-        <option value="14" selected>Due window: 14 days</option>
-        <option value="30">Due window: 30 days</option>
-        <option value="90">Due window: 90 days</option>
-        <option value="180">Due window: 180 days</option>
+        <option value="30" selected>Due window: 30 хоног</option>
+        <option value="60">Due window: 60 хоног</option>
+        <option value="90">Due window: 90 хоног</option>
       </select>
       <label class="check"><input id="onlyOverdue"  type="checkbox" onchange="applyFilters()"> Overdue</label>
       <label class="check"><input id="onlyDueSoon"  type="checkbox" onchange="applyFilters()"> Due soon</label>

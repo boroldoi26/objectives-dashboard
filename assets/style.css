@@ -198,12 +198,12 @@ tr.parent td { font-weight: 800; background: #fcfdff; }
 
 /* ── Status / Risk badges ── */
 .badge { display: inline-flex; align-items: center; border-radius: 999px; padding: 6px 9px; font-size: 12px; font-weight: 900; white-space: nowrap; }
-.completed, .done { background: #e9f8f2; color: var(--green); }
-.progress { background: #eef3ff; color: var(--blue); }
-.notstarted, .nodue { background: #f1f3f7; color: #5b6475; }
+.completed, .done, .track { background: #e9f8f2; color: var(--green); }
+.progress { background: #fff7e6; color: var(--amber); }
+.notstarted { background: #fff1f1; color: var(--red); }
+.nodue { background: #f1f3f7; color: #5b6475; }
 .soon, .risk { background: #fff7e6; color: var(--amber); }
 .critical { background: #fff1f1; color: var(--red); }
-.track { background: #e9f8f2; color: var(--green); }
 
 /* ── Status board ── */
 .board { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
