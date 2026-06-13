@@ -150,17 +150,13 @@ body { margin: 0; font-family: 'Noto Sans', Inter, Arial, sans-serif; background
 .catRow { display: grid; grid-template-columns: 1fr 60px; gap: 10px; align-items: center; }
 .catName { font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-/* ── Employee chart ── */
-.chartBox { height: 230px; display: flex; align-items: flex-end; gap: 12px; padding-top: 12px; }
-.chartCol { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 7px; min-width: 40px; }
-.chartBar {
-  width: 100%; max-width: 48px;
-  background: linear-gradient(180deg, #2563eb, #78a6ff);
-  border-radius: 12px 12px 4px 4px;
-  min-height: 8px;
-}
-.chartLabel { font-size: 11px; color: var(--muted); width: 100%; overflow: hidden; text-overflow: ellipsis; text-align: center; white-space: nowrap; }
-.chartVal { font-size: 12px; font-weight: 900; }
+/* ── Employee chart (horizontal bars) ── */
+.chartBox { display: flex; flex-direction: column; gap: 9px; }
+.chartRow { display: flex; align-items: center; gap: 10px; }
+.chartRowLabel { width: 130px; font-size: 13px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex-shrink: 0; }
+.chartRowBar { flex: 1; height: 12px; background: #edf1f7; border-radius: 999px; overflow: hidden; }
+.chartRowBar i { display: block; height: 100%; background: linear-gradient(90deg, #2563eb, #78a6ff); border-radius: 999px; transition: width .4s ease; }
+.chartRowVal { width: 36px; font-size: 13px; font-weight: 900; text-align: right; flex-shrink: 0; }
 
 /* ── Objectives table ── */
 .tableWrap {
@@ -478,16 +474,6 @@ tr.parent td { font-weight: 800; background: #fcfdff; }
   /* Pagination */
   .pagination { gap: 8px; font-size: 13px; padding: 12px 14px; }
   .pagination .btn { padding: 10px 14px; }
-
-  /* ── Employee chart — horizontal scroll ── */
-  .chartBox {
-    overflow-x: auto;
-    height: 140px;
-    gap: 10px;
-    padding-top: 4px;
-    -webkit-overflow-scrolling: touch;
-  }
-  .chartCol { flex: 0 0 46px; min-width: 46px; }
 
   /* ── Category performance ── */
   .catRow { grid-template-columns: 1fr auto; }

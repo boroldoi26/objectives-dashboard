@@ -193,10 +193,10 @@ function renderEmployeeCards(items) {
 function renderEmployeeChart(items) {
   const max = Math.max(1, ...items.map(x => x.completionRate || 0));
   document.getElementById('employeeChart').innerHTML = items.map(e =>
-    `<div class="chartCol">
-      <div class="chartVal">${e.completionRate}%</div>
-      <div class="chartBar" style="height:${Math.max(6, Math.round((e.completionRate / max) * 70))}px"></div>
-      <div class="chartLabel" title="${esc(e.name)}">${esc(shortName(e.name))}</div>
+    `<div class="chartRow">
+      <div class="chartRowLabel" title="${esc(e.name)}">${esc(shortName(e.name))}</div>
+      <div class="chartRowBar"><i style="width:${Math.round((e.completionRate / max) * 100)}%"></i></div>
+      <div class="chartRowVal">${e.completionRate}%</div>
     </div>`
   ).join('') || '<div class="muted">No data</div>';
 }
