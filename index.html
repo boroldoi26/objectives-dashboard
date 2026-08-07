@@ -3,267 +3,144 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Critical Few Tracker</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/style.css">
+  <title>Objectives Performance Dashboard</title>
+  <style>
+    :root{
+      --nav:#0b1f3a; --nav2:#123c69; --bg:#f3f6fb; --card:#ffffff; --ink:#162033; --muted:#667085;
+      --line:#e5eaf2; --blue:#2563eb; --green:#0f8a5f; --amber:#b7791f; --red:#c53030; --purple:#6d28d9;
+      --shadow:0 14px 38px rgba(15,23,42,.09); --radius:20px;
+    }
+    *{box-sizing:border-box} body{margin:0;font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+    .shell{display:grid;grid-template-columns:280px 1fr;min-height:100vh}.side{background:linear-gradient(180deg,var(--nav),var(--nav2));color:#fff;padding:22px;position:sticky;top:0;height:100vh;overflow:auto}.brand{display:flex;gap:12px;align-items:center;margin-bottom:24px}.logo{width:46px;height:46px;border-radius:16px;background:rgba(255,255,255,.14);display:grid;place-items:center;font-weight:900;font-size:20px}.brand h1{font-size:17px;margin:0;line-height:1.25}.brand small{color:#b9c7d9}.navItem{border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.06);padding:12px 14px;border-radius:14px;margin:9px 0;color:#eaf1fb;cursor:pointer}.navItem:hover,.navItem.active{background:#fff;color:#0b1f3a}.sideFoot{margin-top:30px;padding:14px;border-radius:16px;background:rgba(255,255,255,.08);color:#d4e1ef;font-size:13px;line-height:1.5}.main{padding:24px;max-width:1600px;width:100%;margin:0 auto}.hero{background:linear-gradient(135deg,#ffffff,#edf4ff);border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow);padding:26px;margin-bottom:18px;display:grid;grid-template-columns:1.4fr .6fr;gap:20px;align-items:center}.hero h2{font-size:34px;margin:0 0 8px}.hero p{margin:0;color:var(--muted);line-height:1.5}.heroActions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}.btn{border:0;border-radius:14px;padding:12px 16px;font-weight:800;cursor:pointer;background:var(--blue);color:#fff}.btn.secondary{background:#fff;color:var(--ink);border:1px solid var(--line)}.btn.danger{background:var(--red)}.btn.small{padding:8px 11px;border-radius:10px;font-size:12px}.grid{display:grid;gap:16px}.kpis{grid-template-columns:repeat(6,1fr)}.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 4px 14px rgba(15,23,42,.04);padding:16px}.kpiLabel{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:800}.kpiValue{font-size:30px;font-weight:900;margin-top:8px}.kpiHint{font-size:12px;color:var(--muted);margin-top:5px}.twoCol{grid-template-columns:1.15fr .85fr}.sectionTitle{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin:4px 0 12px}.sectionTitle h3{margin:0;font-size:20px}.sectionTitle span{color:var(--muted);font-size:13px}.filters{display:grid;grid-template-columns:1.5fr repeat(4,1fr) auto auto auto;gap:10px;margin:16px 0}.filters input,.filters select,.modal input,.modal select,.modal textarea{width:100%;border:1px solid var(--line);border-radius:13px;background:#fff;padding:11px 12px;font:inherit}.check{display:flex;align-items:center;gap:8px;white-space:nowrap;color:var(--muted);font-size:13px}.check input{width:auto}.employeeGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}.emp{cursor:pointer;transition:.15s}.emp:hover{transform:translateY(-1px);border-color:#b7c9ff}.emp.active{outline:3px solid rgba(37,99,235,.18);border-color:var(--blue)}.empTop{display:flex;justify-content:space-between;gap:12px}.empName{font-weight:900;line-height:1.25}.percent{font-size:28px;font-weight:950;color:var(--blue)}.bar{height:9px;background:#edf1f7;border-radius:999px;overflow:hidden;margin:10px 0}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--blue),#72a0ff);border-radius:999px}.bar.green i{background:linear-gradient(90deg,var(--green),#64d59f)}.bar.amber i{background:linear-gradient(90deg,var(--amber),#f4bd50)}.meta{display:flex;gap:6px;flex-wrap:wrap;color:var(--muted);font-size:12px}.pill{border-radius:999px;background:#f3f5f8;padding:5px 8px;font-weight:700}.categoryList{display:grid;gap:10px}.catRow{display:grid;grid-template-columns:1fr 60px;gap:10px;align-items:center}.catName{font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.chartBox{height:230px;display:flex;align-items:flex-end;gap:12px;padding-top:12px}.chartCol{flex:1;display:flex;flex-direction:column;align-items:center;gap:7px;min-width:40px}.chartBar{width:100%;max-width:48px;background:linear-gradient(180deg,#2563eb,#78a6ff);border-radius:12px 12px 4px 4px;min-height:8px}.chartLabel{font-size:11px;color:var(--muted);width:100%;overflow:hidden;text-overflow:ellipsis;text-align:center;white-space:nowrap}.chartVal{font-size:12px;font-weight:900}.tableWrap{background:#fff;border:1px solid var(--line);border-radius:22px;overflow:auto;box-shadow:0 4px 14px rgba(15,23,42,.04)}table{border-collapse:collapse;width:100%;min-width:1180px}th,td{padding:13px 12px;border-bottom:1px solid var(--line);vertical-align:top;text-align:left;font-size:14px}th{background:#f9fbff;color:#475467;font-size:12px;letter-spacing:.05em;text-transform:uppercase;position:sticky;top:0;z-index:2}tr:hover td{background:#fbfdff}tr.parent td{font-weight:800;background:#fcfdff}.objective{max-width:480px;line-height:1.45}.indent-3 .objective{padding-left:24px}.indent-4 .objective{padding-left:42px}.badge{display:inline-flex;align-items:center;border-radius:999px;padding:6px 9px;font-size:12px;font-weight:900;white-space:nowrap}.completed,.done{background:#e9f8f2;color:var(--green)}.progress{background:#eef3ff;color:var(--blue)}.notstarted,.nodue{background:#f1f3f7;color:#5b6475}.soon,.risk{background:#fff7e6;color:var(--amber)}.critical{background:#fff1f1;color:var(--red)}.track{background:#e9f8f2;color:var(--green)}.board{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.lane{background:#fff;border:1px solid var(--line);border-radius:18px;padding:12px;min-height:160px}.lane h4{margin:0 0 10px}.miniItem{border:1px solid var(--line);border-radius:13px;padding:10px;margin-bottom:8px;background:#fbfcff;font-size:13px}.miniItem b{display:block;margin-bottom:4px}.loading{padding:34px;text-align:center;color:var(--muted)}.modalBackdrop{position:fixed;inset:0;background:rgba(5,12,27,.55);display:none;align-items:center;justify-content:center;padding:20px;z-index:10}.modal{background:#fff;border-radius:24px;padding:22px;width:min(680px,100%);box-shadow:0 30px 90px rgba(0,0,0,.28)}.modalHead{display:flex;justify-content:space-between;gap:12px}.modalHead h3{margin:0}.close{border:0;background:transparent;font-size:28px;cursor:pointer}.formGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}.full{grid-column:1/-1}.toast{position:fixed;right:22px;bottom:22px;background:#111827;color:#fff;padding:13px 16px;border-radius:14px;display:none;z-index:20}.tab{display:none}.tab.active{display:block}.quickActions{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 16px}.summaryGrid{display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr;gap:12px;margin:0 0 16px}.summaryItem{background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:0 4px 14px rgba(15,23,42,.04)}.summaryItem b{display:block;margin-bottom:6px}.recentList{display:grid;gap:9px}.recentItem{border:1px solid var(--line);border-radius:14px;padding:10px;background:#fbfcff;font-size:13px}.recentItem b{display:block}.muted{color:var(--muted);font-size:12px}.passRow{display:none}.modal.secure .passRow{display:block}.approvalTools{display:grid;grid-template-columns:1fr 1fr auto;gap:10px;margin-bottom:12px}.approvalCard{border:1px solid var(--line);border-radius:16px;padding:13px;background:#fbfcff;margin-bottom:10px}.approvalTop{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.approvalChanges{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:10px 0}.approvalChanges div{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px}.approvalActions{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}@media(max-width:1100px){.shell{grid-template-columns:1fr}.side{height:auto;position:relative}.kpis{grid-template-columns:repeat(3,1fr)}.hero,.twoCol{grid-template-columns:1fr}.heroActions{justify-content:flex-start}.filters{grid-template-columns:1fr 1fr}.summaryGrid{grid-template-columns:1fr 1fr}.board{grid-template-columns:1fr 1fr}}@media(max-width:700px){.main{padding:14px}.kpis{grid-template-columns:repeat(2,1fr)}.filters,.board,.summaryGrid{grid-template-columns:1fr}.hero h2{font-size:26px}.formGrid{grid-template-columns:1fr}}
+  </style>
 </head>
 <body>
-
-<!-- Mobile top bar (hidden on desktop) -->
-<header class="mobileTopBar">
-  <span class="mobileBrand">Critical Few Tracker</span>
-  <span class="mobileDate" id="mobileSideDate"></span>
-</header>
-
 <div class="shell">
-
-  <!-- Sidebar -->
   <aside class="side">
-    <div class="brand">
-      <div class="logo">CRT</div>
-      <div>
-        <h1>Critical Few Tracker</h1>
-        <small id="sideDate">Loading...</small>
-      </div>
-    </div>
-    <div class="navItem active"   onclick="showTab('overview',this)">Dashboard overview</div>
-    <div class="navItem"          onclick="showTab('objectives',this);focusSearch()">Search / My objectives</div>
-    <div class="navItem"          onclick="showTab('employees',this)">Employee performance</div>
-    <div class="navItem"          onclick="showTab('risks',this)">30/60/90</div>
-    <div class="navItem"          onclick="showTab('objectives',this)">Objectives table</div>
-    <div class="navItem"          onclick="showTab('admin',this);loadApprovals()">Leader's approval <span id="pendingBadge"></span></div>
-    <div class="sideFoot">
-      <b>Approval workflow</b><br>
-      Хэрэглэгчийн update хүсэлт эхлээд Pending_Updates sheet дээр хадгалагдаж,
-      admin approve хийсний дараа үндсэн data өөрчлөгдөнө.
-    </div>
+    <div class="brand"><div class="logo">OT</div><div><h1>Objectives Performance Dashboard</h1><small id="sideDate">Loading...</small></div></div>
+    <div class="navItem active" onclick="showTab('overview',this)">Dashboard overview</div>
+    <div class="navItem" onclick="scrollToUpdateTable()">Update objective</div>
+    <div class="navItem" onclick="showTab('objectives',this);focusSearch()">Search / My objectives</div>
+    <div class="navItem" onclick="showTab('employees',this)">Employee performance</div>
+    <div class="navItem" onclick="showTab('risks',this)">Due soon & risk</div>
+    <div class="navItem" onclick="showTab('objectives',this)">Objectives table</div>
+    <div class="navItem" onclick="showTab('admin',this);loadApprovals()">Admin approvals <span id="pendingBadge"></span></div>
+    <div class="sideFoot"><b>Approval workflow</b><br>Хэрэглэгчийн update хүсэлт эхлээд Pending_Updates sheet дээр хадгалагдаж, admin approve хийсний дараа үндсэн data өөрчлөгдөнө.</div>
   </aside>
-
-  <!-- Main content -->
   <main class="main">
-
-    <!-- Hero -->
     <section class="hero">
-      <div>
-        <h2>Critical Few Tracker</h2>
-        <p>Ажилтан тус бүрийн гүйцэтгэл, хугацааны эрсдэл, category progress, objective status-ийг нэг дор харах dashboard.</p>
-      </div>
-      <div class="heroActions">
-        <button class="btn secondary" onclick="copySummary()">Copy summary</button>
-        <button class="btn secondary" onclick="exportCsv()">Export CSV</button>
-        <button class="btn secondary" onclick="clearFilters()">Clear filters</button>
-        <button class="btn"           onclick="loadData()">Refresh dashboard</button>
-      </div>
+      <div><h2>Operational objectives tracker</h2><p>Ажилтан тус бүрийн гүйцэтгэл, хугацааны эрсдэл, category, cascaded priority progress, objective status-ийг нэг дор харах dashboard.</p></div>
+      <div class="heroActions"><button class="btn secondary" onclick="copySummary()">Copy summary</button><button class="btn secondary" onclick="exportCsv()">Export CSV</button><button class="btn secondary" onclick="clearFilters()">Clear filters</button><button class="btn" onclick="loadData()">Refresh dashboard</button></div>
     </section>
-
-    <!-- KPI row -->
     <div class="grid kpis" id="kpis"></div>
-
-    <!-- Manager summary -->
     <div class="summaryGrid" id="managerSummary"></div>
-
-    <!-- Quick actions -->
-    <div class="quickActions">
-      <button class="btn secondary" onclick="setDueWindow(30)">Due 30 хоног</button>
-      <button class="btn secondary" onclick="setDueWindow(60)">Due 60 хоног</button>
-      <button class="btn secondary" onclick="setDueWindow(90)">Due 90 хоног</button>
-      <button class="btn secondary" onclick="showObjectivesQuick()">Find objective</button>
-    </div>
-
-    <!-- Filters -->
+    <div class="quickActions"><button class="btn secondary" onclick="setDueWindow(30)">Due 30 days</button><button class="btn secondary" onclick="setDueWindow(90)">Due 90 days</button><button class="btn secondary" onclick="showObjectivesQuick()">Find objective</button></div>
     <div class="filters">
-      <input id="search" placeholder="Search employee, objective, category..." oninput="debouncedApplyFilters()">
+      <input id="search" placeholder="Search employee, objective, category, cascaded priority..." oninput="debouncedApplyFilters()">
       <select id="employee" onchange="applyFilters()"><option value="">All employees</option></select>
-      <select id="status"   onchange="applyFilters()"><option value="">All statuses</option></select>
+      <select id="status" onchange="applyFilters()"><option value="">All statuses</option></select>
       <select id="category" onchange="applyFilters()"><option value="">All categories</option></select>
-      <select id="dueDays"  onchange="applyFilters()">
-        <option value="30" selected>Due window: 30 хоног</option>
-        <option value="60">Due window: 60 хоног</option>
-        <option value="90">Due window: 90 хоног</option>
-      </select>
-      <label class="check"><input id="onlyOverdue"  type="checkbox" onchange="applyFilters()"> Overdue</label>
-      <label class="check"><input id="onlyDueSoon"  type="checkbox" onchange="applyFilters()"> Due soon</label>
+      <select id="cascadedPriority" onchange="applyFilters()"><option value="">All cascaded priorities</option></select>
+      <select id="dueDays" onchange="applyFilters()"><option value="7">Due window: 7 days</option><option value="14" selected>Due window: 14 days</option><option value="30">Due window: 30 days</option><option value="90">Due window: 90 days</option><option value="180">Due window: 180 days</option></select>
+      <label class="check"><input id="onlyOverdue" type="checkbox" onchange="applyFilters()"> Overdue</label>
+      <label class="check"><input id="onlyDueSoon" type="checkbox" onchange="applyFilters()"> Due soon</label>
       <button class="btn secondary" onclick="clearFilters()">Reset</button>
     </div>
-
-    <!-- Tab: Overview -->
     <section id="overview" class="tab active">
       <div class="grid twoCol">
-        <div class="card">
-          <div class="sectionTitle">
-            <div><h3>Top employee completion</h3><span>Ажилтан тус бүрийн completion хувь</span></div>
-          </div>
-          <div class="chartBox" id="employeeChart"></div>
-        </div>
-        <div class="card">
-          <div class="sectionTitle">
-            <div><h3>Category performance</h3><span>Category тус бүрийн progress</span></div>
-          </div>
-          <div class="categoryList" id="categoryPerformance"></div>
-        </div>
+        <div class="card"><div class="sectionTitle"><div><h3>Top employee completion</h3><span>Ажилтан тус бүрийн completion хувь</span></div></div><div class="chartBox" id="employeeChart"></div></div>
+        <div class="card"><div class="sectionTitle"><div><h3>Category performance</h3><span>Category тус бүрийн progress</span></div></div><div class="categoryList" id="categoryPerformance"></div></div>
       </div>
-      <div class="grid" style="margin-top:16px">
-        <div class="card">
-          <div class="sectionTitle">
-            <div><h3>Employee cards</h3><span>Card дээр дарахад filter хийнэ</span></div>
-            <button class="btn secondary small" onclick="clearEmployeeFilter()">All</button>
-          </div>
-          <div class="employeeGrid" id="employeeCards"></div>
-        </div>
-        <div class="card">
-          <div class="sectionTitle">
-            <div><h3>Status board</h3><span>Top objectives by status</span></div>
-          </div>
-          <div class="board" id="statusBoard"></div>
-        </div>
+      <div class="card" style="margin-top:16px"><div class="sectionTitle"><div><h3>Cascaded Priority performance</h3><span>Cascaded Priority тус бүрийн progress</span></div></div><div class="categoryList" id="cascadedPriorityPerformance"></div></div>
+      <div class="grid twoCol" style="margin-top:16px">
+        <div class="card"><div class="sectionTitle"><div><h3>Employee cards</h3><span>Card дээр дарахад filter хийнэ</span></div><button class="btn secondary small" onclick="clearEmployeeFilter()">All</button></div><div class="employeeGrid" id="employeeCards"></div></div>
+        <div class="card"><div class="sectionTitle"><div><h3>Status board</h3><span>Top objectives by status</span></div></div><div class="board" id="statusBoard"></div></div>
       </div>
-      <div class="card" style="margin-top:16px">
-        <div class="sectionTitle">
-          <div><h3>Recent updates</h3><span>Google Sheet Change_Log дээрх сүүлийн өөрчлөлтүүд</span></div>
-        </div>
-        <div class="recentList" id="recentUpdates"></div>
-      </div>
+          <div class="card" style="margin-top:16px"><div class="sectionTitle"><div><h3>Recent updates</h3><span>Google Sheet Change_Log дээрх сүүлийн өөрчлөлтүүд</span></div></div><div class="recentList" id="recentUpdates"></div></div>
     </section>
-
-    <!-- Tab: Employees -->
-    <section id="employees" class="tab">
-      <div class="card">
-        <div class="sectionTitle">
-          <div><h3>Employee performance progress</h3><span>Total, completed, due soon, overdue, progress score</span></div>
-        </div>
-        <div class="employeeGrid" id="employeeCards2"></div>
-      </div>
-    </section>
-
-    <!-- Tab: Risks / 30-60-90 -->
-    <section id="risks" class="tab">
-      <div class="card overdueCard" id="overdueCard" style="margin-bottom:16px;display:none">
-        <div class="sectionTitle">
-          <div><h3>Хоцорсон зорилт</h3><span>Due date өнгөрсөн, дуусаагүй</span></div>
-          <span class="badge critical" id="overdueCount"></span>
-        </div>
-        <div id="overdueList"></div>
-      </div>
-      <div class="grid threeCol">
-        <div class="card">
-          <div class="sectionTitle"><div><h3>30 хоног</h3><span>0–30 хоног үлдсэн</span></div></div>
-          <div id="due30List"></div>
-        </div>
-        <div class="card">
-          <div class="sectionTitle"><div><h3>60 хоног</h3><span>31–60 хоног үлдсэн</span></div></div>
-          <div id="due60List"></div>
-        </div>
-        <div class="card">
-          <div class="sectionTitle"><div><h3>90 хоног</h3><span>61–90 хоног үлдсэн</span></div></div>
-          <div id="due90List"></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Tab: Objectives table -->
-    <section id="objectives" class="tab">
-      <div class="tableWrap">
-        <div class="loading" id="loading">Loading objectives...</div>
-        <table id="table" style="display:none">
-          <thead>
-            <tr>
-              <th>Priority</th>
-              <th>Objective / Activity</th>
-              <th>Employee</th>
-              <th>Status</th>
-              <th>Risk</th>
-              <th>Category</th>
-              <th>Due</th>
-              <th>Days</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody id="tbody"></tbody>
-        </table>
-      </div>
-      <!-- Pagination renders here -->
-      <div id="paginationContainer"></div>
-    </section>
-
-    <!-- Tab: Admin -->
-    <section id="admin" class="tab">
-      <div class="card">
-        <div class="sectionTitle">
-          <div><h3>Leader's approval</h3><span>Pending_Updates sheet дээр ирсэн update хүсэлтүүд</span></div>
-          <button class="btn secondary small" onclick="loadApprovals()">Refresh</button>
-        </div>
-        <div class="approvalTools">
-          <input id="adminPasscode" type="password" placeholder="Admin passcode">
-          <input id="adminComment"  placeholder="Admin comment optional">
-          <button class="btn secondary" onclick="loadApprovals()">Load pending</button>
-        </div>
-        <div id="approvalList"><div class="muted">Load pending дарж хүсэлтүүдийг харна.</div></div>
-      </div>
-    </section>
-
+    <section id="employees" class="tab"><div class="card"><div class="sectionTitle"><div><h3>Employee performance detail</h3><span>Total, completed, due soon, overdue, progress score</span></div></div><div class="employeeGrid" id="employeeCards2"></div></div></section>
+    <section id="risks" class="tab"><div class="grid twoCol"><div class="card"><div class="sectionTitle"><h3>Critical objectives</h3></div><div id="criticalList"></div></div><div class="card"><div class="sectionTitle"><h3>Due soon objectives</h3></div><div id="dueSoonList"></div></div></div></section>
+    <section id="objectives" class="tab activeTable"><div class="tableWrap"><div class="loading" id="loading">Loading objectives...</div><table id="table" style="display:none"><thead><tr><th>Priority</th><th>Objective / Activity</th><th>Employee</th><th>Status</th><th>Risk</th><th>Category</th><th>Cascaded Priority</th><th>Due</th><th>Days</th><th>Action</th></tr></thead><tbody id="tbody"></tbody></table></div></section>
+    <section id="admin" class="tab"><div class="card"><div class="sectionTitle"><div><h3>Admin approvals</h3><span>Pending_Updates sheet дээр ирсэн update хүсэлтүүд</span></div><button class="btn secondary small" onclick="loadApprovals()">Refresh</button></div><div class="approvalTools"><input id="adminPasscode" type="password" placeholder="Admin passcode"><input id="adminComment" placeholder="Admin comment optional"><button class="btn secondary" onclick="loadApprovals()">Load pending</button></div><div id="approvalList"><div class="muted">Load pending дарж хүсэлтүүдийг харна.</div></div></div></section>
   </main>
 </div>
-
-<!-- Mobile bottom navigation (hidden on desktop) -->
-<nav class="mobileNav">
-  <div class="mobileNavInner">
-    <button class="mobileNavBtn active" onclick="showTab('overview',this)">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-      <span>Нүүр</span>
-    </button>
-    <button class="mobileNavBtn" onclick="showTab('objectives',this);focusSearch()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><circle cx="3" cy="6" r="1.2" fill="currentColor" stroke="none"/><circle cx="3" cy="12" r="1.2" fill="currentColor" stroke="none"/><circle cx="3" cy="18" r="1.2" fill="currentColor" stroke="none"/></svg>
-      <span>Зорилт</span>
-    </button>
-    <button class="mobileNavBtn" onclick="showTab('employees',this)">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
-      <span>Баг</span>
-    </button>
-    <button class="mobileNavBtn" onclick="showTab('risks',this)">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-      <span>30/60/90</span>
-    </button>
-    <button class="mobileNavBtn" onclick="showTab('admin',this);loadApprovals()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-      <span>Approval</span>
-      <span class="mobileNavBadge" id="mobilePendingBadge" style="display:none"></span>
-    </button>
-  </div>
-</nav>
-
-<!-- Update modal -->
-<div class="modalBackdrop" id="modalBackdrop">
-  <div class="modal">
-    <div class="modalHead">
-      <div>
-        <h3 id="modalTitle">Submit update request</h3>
-        <div id="modalSub" style="color:var(--muted);margin-top:4px"></div>
-      </div>
-      <button class="close" onclick="closeModal()">×</button>
-    </div>
-    <div class="formGrid">
-      <label>Status<br><select id="editStatus"></select></label>
-      <label>Due date<br><input id="editDueDate" type="date"></label>
-      <label class="full">Notes<br><textarea id="editNotes" rows="5" placeholder="Update note..."></textarea></label>
-      <label>Requested by<br><input id="editRequestedBy" placeholder="Таны нэр"></label>
-      <label>Request comment<br><input id="editRequestComment" placeholder="Тайлбар optional"></label>
-      <div class="full muted">
-        Энэ өөрчлөлт шууд хадгалагдахгүй. Admin approve хийсний дараа үндсэн dashboard дээр орно.
-      </div>
-      <div class="full" style="display:flex;justify-content:flex-end;gap:10px">
-        <button class="btn secondary" onclick="closeModal()">Cancel</button>
-        <button class="btn" id="submitBtn" onclick="saveUpdate()">Submit for approval</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Toast notification -->
+<div class="modalBackdrop" id="modalBackdrop"><div class="modal"><div class="modalHead"><div><h3 id="modalTitle">Submit update request</h3><div id="modalSub" style="color:var(--muted);margin-top:4px"></div></div><button class="close" onclick="closeModal()">×</button></div><div class="formGrid"><label>Status<br><select id="editStatus"></select></label><label>Due date<br><input id="editDueDate" type="date"></label><label class="full">Notes<br><textarea id="editNotes" rows="5" placeholder="Update note..."></textarea></label><label>Requested by<br><input id="editRequestedBy" placeholder="Таны нэр"></label><label>Request comment<br><input id="editRequestComment" placeholder="Тайлбар optional"></label><div class="full muted">Энэ өөрчлөлт шууд хадгалагдахгүй. Admin approve хийсний дараа үндсэн dashboard дээр орно.</div><div class="full" style="display:flex;justify-content:flex-end;gap:10px"><button class="btn secondary" onclick="closeModal()">Cancel</button><button class="btn" onclick="saveUpdate()">Submit for approval</button></div></div></div></div>
 <div class="toast" id="toast"></div>
-
 <script src="assets/config.js"></script>
-<script src="assets/dashboard.js"></script>
+<script>
+let rows=[], statusOptions=[], selectedRow=null, debounceTimer=null, latestData=null;
+const API_TIMEOUT_MS = 30000;
+
+document.addEventListener('DOMContentLoaded',()=>{
+  if(!window.DASHBOARD_API_URL || window.DASHBOARD_API_URL.includes('PASTE_APPS_SCRIPT')){
+    toast('API URL тохируулаагүй байна. assets/config.js файлыг засна уу.');
+    showLoading(false);
+    document.getElementById('loading').innerHTML = 'API URL тохируулаагүй байна. assets/config.js файлыг засна уу.';
+    document.getElementById('loading').style.display = 'block';
+    return;
+  }
+  loadData();
+});
+
+function apiJsonp(params){
+  return new Promise((resolve,reject)=>{
+    const callbackName = 'jsonp_cb_' + Date.now() + '_' + Math.floor(Math.random()*100000);
+    const script = document.createElement('script');
+    const timeout = setTimeout(()=>{cleanup(); reject(new Error('API request timeout'));}, API_TIMEOUT_MS);
+    function cleanup(){clearTimeout(timeout); delete window[callbackName]; if(script.parentNode) script.parentNode.removeChild(script);}
+    window[callbackName] = (payload)=>{cleanup(); if(payload && payload.ok) resolve(payload.data); else reject(new Error((payload && payload.error) ? payload.error : 'API error'));};
+    const url = new URL(window.DASHBOARD_API_URL);
+    Object.entries(params || {}).forEach(([k,v])=>{ if(v !== undefined && v !== null && v !== '') url.searchParams.set(k, String(v)); });
+    url.searchParams.set('callback', callbackName);
+    script.onerror = ()=>{cleanup(); reject(new Error('Could not load Apps Script API. Check deployment access.'));};
+    script.src = url.toString();
+    document.body.appendChild(script);
+  });
+}
+
+function loadData(filters=collectFiltersSafe()){showLoading(true);apiJsonp({action:'data', ...(filters||{})}).then(data=>{latestData=data;rows=data.rows||[];statusOptions=data.statusOptions||['Not Started','In Progress','Completed'];renderAll(data);showLoading(false);}).catch(err=>{toast('Error: '+err.message);showLoading(false);document.getElementById('loading').innerHTML='Алдаа: '+esc(err.message);document.getElementById('loading').style.display='block';});}
+function renderAll(data){document.getElementById('sideDate').textContent='Updated '+new Date().toLocaleString();renderKpis(data.summary||{}, data.dueSoonDays||14);renderManagerSummary(data.managerSummary||{});renderFilters(data.filters||{});renderEmployeeCards(data.employeePerformance||[]);renderEmployeeChart((data.employeePerformance||[]).slice(0,10));renderCategory(data.categoryPerformance||[]);renderCascadedPriority(data.cascadedPriorityPerformance||[]);renderBoard(rows);renderRiskLists(rows);renderRecentUpdates(data.recentUpdates||[]);renderRows(rows);renderPendingBadge(data.pendingApprovalCount||0);}
+function renderKpis(s,dueDays){const items=[['Total',s.total||0,'Бүх objective'],['Completed',s.completed||0,(s.completionRate||0)+'% completion'],['In progress',s.inProgress||0,'Active work'],['Not started',s.notStarted||0,'Pending'],['Due soon',s.dueSoon||0,'Next '+(dueDays||14)+' days'],['Pending approval',s.pendingApprovalCount||0,'Admin review'],['Progress score',(s.progressScore||0)+'%','Weighted progress']];document.getElementById('kpis').innerHTML=items.map(x=>`<div class="card"><div class="kpiLabel">${x[0]}</div><div class="kpiValue">${x[1]}</div><div class="kpiHint">${x[2]}</div></div>`).join('');}
+
+function renderManagerSummary(m){document.getElementById('managerSummary').innerHTML=`<div class="summaryItem"><b>Manager summary</b><span>${esc(m.text||'No summary')}</span></div><div class="summaryItem"><b>Top employee</b><span>${esc(m.topEmployee||'-')}</span></div><div class="summaryItem"><b>Needs attention</b><span>${esc(m.attention||'-')}</span></div><div class="summaryItem"><b>Focus category</b><span>${esc(m.delayedCategory||'-')}</span></div><div class="summaryItem"><b>Focus cascaded priority</b><span>${esc(m.delayedCascadedPriority||'-')}</span></div>`;}
+function renderRecentUpdates(items){document.getElementById('recentUpdates').innerHTML=items.map(u=>`<div class="recentItem"><b>${esc(u.timestamp)} · ${esc(u.priority)} · ${esc(u.field)}</b><span>${esc(u.oldValue||'-')} → ${esc(u.newValue||'-')}</span><br><span class="muted">${esc(u.user||'Unknown')} · ${esc(cut(u.objective||'',120))}</span></div>`).join('')||'<div class="muted">Одоогоор update history байхгүй байна.</div>';}
+
+function renderFilters(f){fillSelect('employee',f.employees||[],'All employees');fillSelect('status',f.statuses||statusOptions,'All statuses');fillSelect('category',f.categories||[],'All categories');fillSelect('cascadedPriority',f.cascadedPriorities||[],'All cascaded priorities');}
+function fillSelect(id,items,all){const el=document.getElementById(id),cur=el.value;el.innerHTML='<option value="">'+all+'</option>'+items.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join('');el.value=cur;}
+function renderEmployeeCards(items){const html=items.map(e=>`<div class="card emp ${document.getElementById('employee').value===e.name?'active':''}" onclick="setEmployeeFilter('${js(e.name)}')"><div class="empTop"><div class="empName">${esc(e.name)}</div><div class="percent">${e.completionRate}%</div></div><div class="bar"><i style="width:${e.completionRate}%"></i></div><div class="meta"><span class="pill">Total ${e.total}</span><span class="pill">Done ${e.completed}</span><span class="pill">Score ${e.progressScore}%</span><span class="pill">Due ${e.dueSoon}</span><span class="pill">Overdue ${e.overdue}</span></div></div>`).join('')||'<div class="muted">No employees</div>';document.getElementById('employeeCards').innerHTML=html;document.getElementById('employeeCards2').innerHTML=html;}
+function renderEmployeeChart(items){const max=Math.max(100,...items.map(x=>x.completionRate||0));document.getElementById('employeeChart').innerHTML=items.map(e=>`<div class="chartCol"><div class="chartVal">${e.completionRate}%</div><div class="chartBar" style="height:${Math.max(8,(e.completionRate/max)*180)}px"></div><div class="chartLabel" title="${esc(e.name)}">${esc(shortName(e.name))}</div></div>`).join('')||'<div class="muted">No data</div>';}
+function renderCategory(items){document.getElementById('categoryPerformance').innerHTML=items.map(c=>`<div class="catRow"><div><div class="catName" title="${esc(c.name)}">${esc(c.name)}</div><div class="bar green"><i style="width:${c.completionRate}%"></i></div><div class="meta"><span>Total ${c.total}</span><span>Done ${c.completed}</span><span>Score ${c.progressScore}%</span></div></div><b>${c.completionRate}%</b></div>`).join('')||'<div class="muted">No category</div>';}
+function renderCascadedPriority(items){document.getElementById('cascadedPriorityPerformance').innerHTML=items.map(c=>`<div class="catRow"><div><div class="catName" title="${esc(c.name)}">${esc(c.name)}</div><div class="bar amber"><i style="width:${c.completionRate}%"></i></div><div class="meta"><span>Total ${c.total}</span><span>Done ${c.completed}</span><span>Score ${c.progressScore}%</span></div></div><b>${c.completionRate}%</b></div>`).join('')||'<div class="muted">No cascaded priority</div>';}
+function renderBoard(items){const groups=['Completed','In Progress','Not Started','Critical'];const by={Completed:[], 'In Progress':[], 'Not Started':[], Critical:[]};items.forEach(r=>{if(r.risk==='Critical')by.Critical.push(r);else if(by[r.status])by[r.status].push(r);});document.getElementById('statusBoard').innerHTML=groups.map(g=>`<div class="lane"><h4>${g} (${by[g].length})</h4>${by[g].slice(0,5).map(r=>`<div class="miniItem"><b>${esc(r.priority)}</b>${esc(cut(r.objective,80))}<br><span class="muted">${esc(r.employee||'')}</span></div>`).join('')||'<div class="muted">No items</div>'}</div>`).join('');}
+function renderRiskLists(items){const card=r=>`<div class="miniItem"><b>${esc(r.priority)} · ${esc(r.employee||'')}</b>${esc(cut(r.objective,120))}<br><span class="muted">Due: ${esc(r.dueDate||'-')} · ${r.daysLeft} days</span></div>`;document.getElementById('criticalList').innerHTML=items.filter(r=>r.risk==='Critical').slice(0,12).map(card).join('')||'<div class="muted">No critical objectives</div>';document.getElementById('dueSoonList').innerHTML=items.filter(r=>r.dueSoon).slice(0,12).map(card).join('')||'<div class="muted">No due soon objectives</div>';}
+function renderRows(items){document.getElementById('tbody').innerHTML=items.map(r=>`<tr class="${r.isParent?'parent':''} indent-${r.level}"><td>${esc(r.priority)}</td><td><div class="objective">${esc(r.objective)}</div><div class="muted">${esc(cut(r.currentState||'',120))}</div></td><td>${esc(r.employee)}</td><td>${badge(r.status)}</td><td>${riskBadge(r.risk)}</td><td>${esc(r.category)}</td><td>${esc(r.cascadedPriority||'Unassigned')}</td><td>${esc(r.dueDate||'')}</td><td>${r.daysLeft===''?'-':r.daysLeft}</td><td><button class="btn small" onclick="openModal(${r.rowNumber})">Update</button></td></tr>`).join('');}
+function badge(s){let c=s==='Completed'?'completed':s==='In Progress'?'progress':'notstarted';return `<span class="badge ${c}">${esc(s)}</span>`}function riskBadge(s){let c=s==='Critical'?'critical':s==='At Risk'?'risk':s==='Due Soon'?'soon':s==='Done'?'done':s==='On Track'?'track':'nodue';return `<span class="badge ${c}">${esc(s)}</span>`}
+function applyFilters(){loadData(collectFilters())}function debouncedApplyFilters(){clearTimeout(debounceTimer);debounceTimer=setTimeout(applyFilters,250)}function collectFiltersSafe(){return document.getElementById('search')?collectFilters():{}}function collectFilters(){return{search:val('search'),employee:val('employee'),status:val('status'),category:val('category'),cascadedPriority:val('cascadedPriority'),dueDays:val('dueDays'),onlyOverdue:document.getElementById('onlyOverdue').checked,onlyDueSoon:document.getElementById('onlyDueSoon').checked}}
+function clearFilters(){['search','employee','status','category','cascadedPriority'].forEach(id=>document.getElementById(id).value='');document.getElementById('dueDays').value='14';document.getElementById('onlyOverdue').checked=false;document.getElementById('onlyDueSoon').checked=false;loadData({})}function clearEmployeeFilter(){document.getElementById('employee').value='';applyFilters()}function setEmployeeFilter(e){document.getElementById('employee').value=e;applyFilters()}
+function openModal(rowNumber){selectedRow=rows.find(r=>r.rowNumber===rowNumber);if(!selectedRow)return;document.getElementById('modalTitle').textContent=selectedRow.priority+' Update request';document.getElementById('modalSub').textContent=selectedRow.employee+' · '+cut(selectedRow.objective,100);document.getElementById('editStatus').innerHTML=statusOptions.map(s=>`<option value="${esc(s)}">${esc(s)}</option>`).join('');document.getElementById('editStatus').value=selectedRow.status;document.getElementById('editDueDate').value=selectedRow.dueDate||'';document.getElementById('editNotes').value=selectedRow.notes||'';document.getElementById('editRequestedBy').value=selectedRow.employee||'';document.getElementById('editRequestComment').value='';document.getElementById('modalBackdrop').style.display='flex'}function closeModal(){document.getElementById('modalBackdrop').style.display='none'}
+function saveUpdate(){if(!selectedRow)return;const payload={action:'update',rowNumber:selectedRow.rowNumber,status:val('editStatus'),dueDate:val('editDueDate'),notes:val('editNotes'),requestedBy:val('editRequestedBy'),requestComment:val('editRequestComment')};apiJsonp(payload).then(res=>{closeModal();toast((res&&res.message)||'Approval request submitted');loadData(collectFilters())}).catch(err=>toast('Error: '+err.message));}
+
+
+function renderPendingBadge(n){const el=document.getElementById('pendingBadge');if(el)el.textContent=n?('('+n+')'):'';}
+function loadApprovals(){apiJsonp({action:'approvals'}).then(items=>renderApprovals(items||[])).catch(err=>toast('Error: '+err.message));}
+function renderApprovals(items){const el=document.getElementById('approvalList');if(!items.length){el.innerHTML='<div class="muted">Pending approval байхгүй байна.</div>';return;}el.innerHTML=items.map(a=>`<div class="approvalCard"><div class="approvalTop"><div><b>${esc(a.priority)} · ${esc(a.employee)}</b><div class="muted">${esc(a.requestedAt)} · Requested by: ${esc(a.requestedBy||'-')} · ${esc(a.requestId)}</div></div><span class="badge soon">Pending</span></div><div style="margin-top:8px">${esc(cut(a.objective,180))}</div><div class="approvalChanges"><div><b>Status</b><br>${esc(a.oldStatus||'-')} → ${esc(a.newStatus||'-')}</div><div><b>Due date</b><br>${esc(a.oldDueDate||'-')} → ${esc(a.newDueDate||'-')}</div><div><b>Notes</b><br>${esc(cut(a.oldNotes||'-',60))} → ${esc(cut(a.newNotes||'-',60))}</div></div>${a.requestComment?`<div class="muted"><b>Comment:</b> ${esc(a.requestComment)}</div>`:''}<div class="approvalActions"><button class="btn small" onclick="reviewApproval('${js(a.requestId)}','approve')">Approve</button><button class="btn danger small" onclick="reviewApproval('${js(a.requestId)}','reject')">Reject</button></div></div>`).join('');}
+function reviewApproval(requestId,decision){const pass=val('adminPasscode');if(!pass){toast('Admin passcode оруулна уу.');return;}apiJsonp({action:decision,requestId:requestId,adminPasscode:pass,adminComment:val('adminComment')}).then(()=>{toast(decision==='approve'?'Approved':'Rejected');loadApprovals();loadData(collectFilters())}).catch(err=>toast('Error: '+err.message));}
+
+function setDueWindow(days){document.getElementById('dueDays').value=String(days);document.getElementById('onlyDueSoon').checked=true;applyFilters();}
+function focusSearch(){setTimeout(()=>document.getElementById('search').focus(),100);}
+function showObjectivesQuick(){const target=Array.from(document.querySelectorAll('.navItem')).find(x=>x.textContent.includes('Objectives table'))||document.querySelector('.navItem');showTab('objectives',target);focusSearch();}
+function scrollToUpdateTable(){showObjectivesQuick();document.getElementById('objectives').scrollIntoView({behavior:'smooth'});}
+function copySummary(){const s=(latestData&&latestData.summary)||{};const m=(latestData&&latestData.managerSummary)||{};const text=`Objectives Dashboard Summary
+Total: ${s.total||0}
+Completed: ${s.completed||0}
+In Progress: ${s.inProgress||0}
+Not Started: ${s.notStarted||0}
+Completion: ${s.completionRate||0}%
+Progress Score: ${s.progressScore||0}%
+Attention: ${m.attention||''}`;navigator.clipboard&&navigator.clipboard.writeText(text);toast('Summary copied');}
+function exportCsv(){const header=['Priority','Employee','Status','Risk','Category','Cascaded Priority','DueDate','DaysLeft','Objective'];const csv=[header].concat(rows.map(r=>[r.priority,r.employee,r.status,r.risk,r.category,r.cascadedPriority,r.dueDate,r.daysLeft,String(r.objective||'').replace(/\n/g,' ')]));const text=csv.map(cols=>cols.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\n');const blob=new Blob([text],{type:'text/csv;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='objectives_export.csv';a.click();URL.revokeObjectURL(a.href);}
+
+function showTab(id,el){document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.navItem').forEach(x=>x.classList.remove('active'));el.classList.add('active')}function showLoading(on){document.getElementById('loading').style.display=on?'block':'none';document.getElementById('table').style.display=on?'none':'table'}function toast(t){const el=document.getElementById('toast');el.textContent=t;el.style.display='block';setTimeout(()=>el.style.display='none',2600)}function val(id){return document.getElementById(id).value}function esc(v){return String(v??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]))}function js(v){return String(v??'').replace(/\\/g,'\\\\').replace(/'/g,"\\'")}function cut(s,n){s=String(s||'');return s.length>n?s.slice(0,n-1)+'…':s}function shortName(n){return String(n||'').split(/\s+/).slice(0,2).join(' ')}
+</script>
 </body>
 </html>
