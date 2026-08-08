@@ -2,12 +2,146 @@
 window.DASHBOARD_API_URL = 'https://script.google.com/macros/s/AKfycbxe5EGNuv8clDlvaq_d6xt95ZBLoqG5IEgMSmPQ-MUn94ZdQ0iBuOn2GQ90tvk-NbIrzw/exec';
 
 (function () {
+  var SHEET_ID = '1Yw6dYNGRxq1gps71p3sMzu0f-IePVYdoiQIycyC5Qg4';
+  var SHEET_NAME = 'Objectives status and detail re';
+  var liveCascadeMap = null;
+  var liveCascadePromise = null;
+
+  function cleanText(v) {
+    return String(v == null ? '' : v).trim();
+  }
+
+  function isAssigned(v) {
+    var s = cleanText(v).toLowerCase();
+    return !!s && s !== 'unassigned' && s !== 'undefined' && s !== 'null';
+  }
+
+  function parentKey(priority) {
+    return cleanText(priority).replace(/\.$/, '').split('.').slice(0, 2).join('.');
+  }
+
+  function priorityLevel(priority) {
+    var p = cleanText(priority).replace(/\.$/, '');
+    return p ? p.split('.').length : 1;
+  }
+
   function sortHighToLow(items) {
     return (items || []).slice().sort(function (a, b) {
       return (Number(b.completionRate || 0) - Number(a.completionRate || 0)) ||
              (Number(b.progressScore || 0) - Number(a.progressScore || 0)) ||
              (Number(b.completed || 0) - Number(a.completed || 0)) ||
              (Number(b.total || 0) - Number(a.total || 0));
+    });
+  }
+
+  function readLiveCascadeMap() {
+    if (liveCascadePromise) return liveCascadePromise;
+    liveCascadePromise = new Promise(function (resolve) {
+      var cb = 'cascadeGviz_' + Date.now() + '_' + Math.floor(Math.random() * 100000);
+      var script = document.createElement('script');
+      var done = false;
+
+      function finish(map) {
+        if (done) return;
+        done = true;
+        try { delete window[cb]; } catch (e) {}
+        try { script.remove(); } catch (e) {}
+        liveCascadeMap = map || {};
+        resolve(liveCascadeMap);
+      }
+
+      window[cb] = function (res) {
+        try {
+          var rows = res && res.table && Array.isArray(res.table.rows) ? res.table.rows : [];
+          var map = {};
+          var currentCascade = '';
+          var currentParent = '';
+          var currentEmployee = '';
+
+          rows.slice(1).forEach(function (row, index) {
+            var c = row.c || [];
+            var rowNumber = index + 5;
+            var employee = cleanText(c[0] && (c[0].f != null ? c[0].f : c[0].v));
+            var priority = cleanText(c[1] && (c[1].f != null ? c[1].f : c[1].v)).replace(/\.$/, '');
+            var cascaded = cleanText(c[6] && (c[6].f != null ? c[6].f : c[6].v));
+            var pKey = parentKey(priority);
+            var level = priorityLevel(priority);
+
+            if (employee && employee !== currentEmployee) {
+              currentEmployee = employee;
+              currentCascade = '';
+              currentParent = '';
+            }
+
+            if (isAssigned(cascaded)) {
+              currentCascade = cascaded;
+              currentParent = pKey;
+              map[rowNumber] = cascaded;
+              return;
+            }
+
+            if (level <= 2) {
+              currentCascade = '';
+              currentParent = '';
+              map[rowNumber] = '';
+              return;
+            }
+
+            if (currentCascade && pKey === currentParent) {
+              map[rowNumber] = currentCascade;
+            } else {
+              map[rowNumber] = '';
+            }
+          });
+          finish(map);
+        } catch (e) {
+          finish({});
+        }
+      };
+
+      script.onerror = function () { finish({}); };
+      script.src = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/gviz/tq?sheet=' + encodeURIComponent(SHEET_NAME) + '&range=A4:K367&tqx=out:json;responseHandler:' + cb + '&_=' + Date.now();
+      document.body.appendChild(script);
+      window.setTimeout(function () { finish({}); }, 12000);
+    });
+    return liveCascadePromise;
+  }
+
+  function applyLiveCascadeToRows(items) {
+    var map = liveCascadeMap || {};
+    var currentEmployee = '';
+    var currentCascade = '';
+    var currentParent = '';
+
+    return (items || []).map(function (r, index) {
+      var copy = Object.assign({}, r);
+      var rowNumber = Number(copy.rowNumber || (index + 5));
+      var employee = cleanText(copy.employee);
+      var priority = cleanText(copy.priority).replace(/\.$/, '');
+      var pKey = parentKey(priority);
+      var level = priorityLevel(priority);
+      var sheetValue = cleanText(map[rowNumber]);
+      var apiValue = cleanText(copy.cascadedPriority);
+      var cp = isAssigned(sheetValue) ? sheetValue : (isAssigned(apiValue) ? apiValue : '');
+
+      if (employee && employee !== currentEmployee) {
+        currentEmployee = employee;
+        currentCascade = '';
+        currentParent = '';
+      }
+
+      if (isAssigned(cp)) {
+        currentCascade = cp;
+        currentParent = pKey;
+      } else if (level <= 2) {
+        currentCascade = '';
+        currentParent = '';
+      } else if (currentCascade && pKey === currentParent) {
+        cp = currentCascade;
+      }
+
+      copy.cascadedPriority = isAssigned(cp) ? cp : 'Unassigned';
+      return copy;
     });
   }
 
@@ -22,8 +156,33 @@ window.DASHBOARD_API_URL = 'https://script.google.com/macros/s/AKfycbxe5EGNuv8cl
     });
   }
 
-  function patchSortingFunctions() {
-    if (window.__dashboardSortPatchApplied) return;
+  function patchDashboardDataFunctions() {
+    if (window.__cascadeLiveSheetPatchApplied) return;
+
+    if (typeof window.normalizeApiRows === 'function') {
+      var originalNormalizeApiRows = window.normalizeApiRows;
+      window.normalizeApiRows = function (items) {
+        var normalized = originalNormalizeApiRows(items || []);
+        return applyLiveCascadeToRows(normalized);
+      };
+    }
+
+    if (typeof window.applyLocalFilters === 'function') {
+      var originalApplyLocalFilters = window.applyLocalFilters;
+      window.applyLocalFilters = function (items) {
+        return originalApplyLocalFilters(applyLiveCascadeToRows(items || []));
+      };
+    }
+
+    if (typeof window.loadData === 'function') {
+      var originalLoadData = window.loadData;
+      window.loadData = function () {
+        var args = arguments;
+        return readLiveCascadeMap().then(function () {
+          return originalLoadData.apply(window, args);
+        });
+      };
+    }
 
     if (typeof window.renderEmployeeChart === 'function') {
       var originalRenderEmployeeChart = window.renderEmployeeChart;
@@ -49,20 +208,14 @@ window.DASHBOARD_API_URL = 'https://script.google.com/macros/s/AKfycbxe5EGNuv8cl
     if (typeof window.buildGroup === 'function') {
       var originalBuildGroup = window.buildGroup;
       window.buildGroup = function (items, key) {
-        var result = originalBuildGroup(items, key);
-        if (key === 'employee' || key === 'cascadedPriority') {
-          return sortHighToLow(result);
-        }
+        var source = key === 'cascadedPriority' ? applyLiveCascadeToRows(items || []) : (items || []);
+        var result = originalBuildGroup(source, key);
+        if (key === 'employee' || key === 'cascadedPriority') return sortHighToLow(result);
         return result;
       };
     }
 
-    window.__dashboardSortPatchApplied = true;
-  }
-
-  function forceSortRenderedSections() {
-    patchSortingFunctions();
-    hideUnassignedCascadedPerformance();
+    window.__cascadeLiveSheetPatchApplied = true;
   }
 
   function addMobileUxPatch() {
@@ -126,11 +279,22 @@ window.DASHBOARD_API_URL = 'https://script.google.com/macros/s/AKfycbxe5EGNuv8cl
 
   function startPatch() {
     addMobileUxPatch();
-    forceSortRenderedSections();
-    var box = document.getElementById('cascadedPriorityPerformance');
-    if (box && window.MutationObserver) {
-      var observer = new MutationObserver(forceSortRenderedSections);
-      observer.observe(box, { childList: true, subtree: true });
+    readLiveCascadeMap().then(function () {
+      patchDashboardDataFunctions();
+      hideUnassignedCascadedPerformance();
+      if (typeof window.loadData === 'function' && !window.__cascadeReloadedOnce) {
+        window.__cascadeReloadedOnce = true;
+        window.loadData();
+      }
+    });
+
+    var observerTarget = document.documentElement;
+    if (observerTarget && window.MutationObserver) {
+      var observer = new MutationObserver(function () {
+        patchDashboardDataFunctions();
+        hideUnassignedCascadedPerformance();
+      });
+      observer.observe(observerTarget, { childList: true, subtree: true });
     }
   }
 
@@ -139,8 +303,10 @@ window.DASHBOARD_API_URL = 'https://script.google.com/macros/s/AKfycbxe5EGNuv8cl
   } else {
     startPatch();
   }
+
   window.setInterval(function () {
     addMobileUxPatch();
-    forceSortRenderedSections();
+    patchDashboardDataFunctions();
+    hideUnassignedCascadedPerformance();
   }, 1000);
 })();
