@@ -2,6 +2,41 @@
 // Stable API-only config. Dashboard data is served by Apps Script.
 window.DASHBOARD_API_URL = 'https://script.google.com/macros/s/AKfycbxe5EGNuv8clDlvaq_d6xt95ZBLoqG5IEgMSmPQ-MUn94ZdQ0iBuOn2GQ90tvk-NbIrzw/exec';
 
+// Cascaded Priority display label aliases.
+(function () {
+  var OLD_LABEL = 'Enabling Safe and Productive Operations';
+  var NEW_LABEL = 'Placement Test / Gap Training and 360 Training';
+
+  function normalizeCpLabel(v) {
+    return String(v || '').trim() === OLD_LABEL ? NEW_LABEL : v;
+  }
+
+  function patchTextNodeLabels(root) {
+    try {
+      var walker = document.createTreeWalker(root || document.body, NodeFilter.SHOW_TEXT);
+      var nodes = [];
+      while (walker.nextNode()) nodes.push(walker.currentNode);
+      nodes.forEach(function (node) {
+        if (node.nodeValue && node.nodeValue.indexOf(OLD_LABEL) !== -1) {
+          node.nodeValue = node.nodeValue.split(OLD_LABEL).join(NEW_LABEL);
+        }
+      });
+    } catch (e) {}
+  }
+
+  window.normalizeCascadedPriorityLabel = normalizeCpLabel;
+  window.CASCADED_PRIORITY_LABEL_ALIASES = window.CASCADED_PRIORITY_LABEL_ALIASES || {};
+  window.CASCADED_PRIORITY_LABEL_ALIASES[OLD_LABEL] = NEW_LABEL;
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () { patchTextNodeLabels(document.body); });
+  } else {
+    patchTextNodeLabels(document.body);
+  }
+
+  window.setInterval(function () { patchTextNodeLabels(document.body); }, 800);
+})();
+
 // Cascaded Priority fallback map generated from uploaded Excel file:
 // objectives_dashboard_google_sheet_template (1).xlsx
 // Sheet: Objectives status and detail re, column G = Cascaded Priority.
@@ -33,9 +68,9 @@ window.DASHBOARD_API_URL = 'https://script.google.com/macros/s/AKfycbxe5EGNuv8cl
     [220,232,'Training Validity Optimization'],
     [238,245,'Digital & Online Training Enablement'],
     [250,254,'Training Validity Optimization'],
-    [267,283,'Enabling Safe and Productive Operations'],
-    [300,328,'Enabling Safe and Productive Operations'],
-    [332,351,'Enabling Safe and Productive Operations'],
+    [267,283,'Placement Test / Gap Training and 360 Training'],
+    [300,328,'Placement Test / Gap Training and 360 Training'],
+    [332,351,'Placement Test / Gap Training and 360 Training'],
     [355,359,'Training Validity Optimization'],
     [360,364,'Duplicated Training Optimization'],
     [365,367,'Digital & Online Training Enablement']
@@ -46,12 +81,18 @@ window.DASHBOARD_API_URL = 'https://script.google.com/macros/s/AKfycbxe5EGNuv8cl
     return !!s && s !== 'unassigned' && s !== 'undefined' && s !== 'null' && s !== '-';
   }
 
+  function normalize(v) {
+    if (typeof window.normalizeCascadedPriorityLabel === 'function') return window.normalizeCascadedPriorityLabel(v);
+    return v;
+  }
+
   function exactCp(rowNumber, current) {
+    current = normalize(current);
     if (assigned(current)) return current;
     var n = Number(rowNumber || 0);
     for (var i = 0; i < CP_RANGES_EXACT.length; i++) {
       var r = CP_RANGES_EXACT[i];
-      if (n >= r[0] && n <= r[1]) return r[2];
+      if (n >= r[0] && n <= r[1]) return normalize(r[2]);
     }
     return current || 'Unassigned';
   }
